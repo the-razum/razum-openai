@@ -1,0 +1,89 @@
+Metadata-Version: 2.4
+Name: razum-openai
+Version: 0.1.0
+Summary: Razum AI SDK — Drop-in OpenAI replacement for decentralized AI inference
+Home-page: https://github.com/the-razum/razum-openai
+Author: Razum AI Team
+Author-email: dev@airazum.com
+Keywords: razum ai openai llm decentralized gpu inference
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Razum AI SDK for Python
+
+Drop-in replacement for the OpenAI Python SDK. Route your AI requests through the Razum decentralized GPU network.
+
+## Installation
+
+```bash
+pip install razum-openai
+```
+
+## Quick Start
+
+```python
+from razum_openai import RazumAI
+
+client = RazumAI(api_key='rzm_api_...')
+
+# Non-streaming
+response = client.chat.completions.create(
+    model='qwen3.5-9b',
+    messages=[{'role': 'user', 'content': 'Что такое Razum AI?'}]
+)
+print(response.choices[0].message.content)
+
+# Streaming
+stream = client.chat.completions.create(
+    model='deepseek-r1-7b',
+    messages=[{'role': 'user', 'content': 'Реши задачу: 15 * 17'}],
+    stream=True,
+)
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end='')
+```
+
+## Or use OpenAI SDK directly
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url='https://airazum.com/api/v1',
+    api_key='rzm_api_...'
+)
+# Same API as OpenAI — just different base_url
+```
+
+## Available Models
+
+| Model | Description |
+|-------|-------------|
+| qwen3.5-9b | Universal model, excellent Russian |
+| deepseek-r1-7b | Reasoning and logic |
+
+## Get API Key
+
+1. Register at https://airazum.com/register
+2. Go to Account → Generate API Key
+3. Use the key with this SDK
+
+## License
+
+MIT
